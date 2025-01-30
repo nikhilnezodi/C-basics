@@ -1,0 +1,8 @@
+Declaration: Tells the compiler that I have a variable i of datatype integer. Don't allocate any memory. It has memory allocated by some other program.
+Definition: I have a variable of type datatype. Also allocate some memory for the variable.
+
+int i; (Declaration+Definition)
+
+extern int i; (Declaration)
+
+
