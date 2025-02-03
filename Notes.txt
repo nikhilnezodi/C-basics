@@ -5,7 +5,7 @@ int i; (Declaration+Definition)
 
 extern int i; (Declaration)
 
-
+====================================================================================
 Pointers
 
         data_type * pointer_name;
@@ -28,7 +28,7 @@ suppose i want to point to 0x600
 p = 0x600;
 p+5 //now it will point to 0x605
 
-
+================================================================================
 //Structures
 Struct is a user defined datatype
 syntax of struct==>
@@ -43,7 +43,7 @@ struct student{
 struct student s;
 
 To access student_id of this struct==> s.student_id
-
+=================================================================================
 
 Bitwise Operators - Used to read/modify certain bit of a byte [Bitwise Manipulation]
 1. AND Operator (&) - 
@@ -61,7 +61,7 @@ eg. A = 10110101
    ~A = 01001010
  A<<1 = 01101010
  A>>1 = 01011010
-
+===================================================================================
  Functions - 
 
  return_type function_name(argument); //Function Declaration
@@ -82,3 +82,140 @@ int add(int a, intb)
 
 
 eg. f = add(5,3); //Function call
+=========================================================================================
+Qualifiers - 
+Qualifiers when used with variables, it can change the property of that variable
+1. Size - short, long, long long
+
+eg. int var; //size = 4 bytes
+    short int var; //size = 2 bytes
+    long int var; //size = 8 bytes
+    double var ==>8bytes
+    long double var ==> 8/16 bytes
+    long long int var ==> 8 bytes
+----------------------------------------------------------------------------------
+2. Signed - signed , unsigned
+   int a; -> +ve,0,-ve
+   unsigned int a; -> 0,+ve
+   signed int a; -> -ve,0,+ve (default qualifier)
+
+   for eg. signed int a; ->4 bytes = 32 bits.
+   MSB is signed bit => 0 - then remaining 31 bits are positive
+                        1 - then remaining 31 bits are negative
+           unsigned int a; -> all 32 bits for the value of the variable 
+           Hence - unsigned int max values (2^32 -1)
+                   signed int max values   (2^31 - 1)
+----------------------------------------------------------------------------------
+3. Type - const, volatile
+   const => variable declared will be read-only. cannot be modified.
+
+   const int a = 10;
+   a= 20; //not allowed
+
+   const int b; //such a declaration is also not allowed
+
+   const can also be used for Pointers
+   int a;
+   int b;
+   const int * p = &a; // it creates a pointer p of type const int 
+                       // pointer p points to a memory location of type const int
+        *p =20; is not allowed
+        p=&b; // This is allowed
+
+        1. A pointer to a const integer
+           int a;
+           int b;
+           const int * p;
+           p=&a; //valid because p itself is not a constant
+           *p=30; // invalid because the memory location that p is pointing to is constant
+           p=&b; //valid
+
+        2. constant pointer
+           int * const p; //p variable itself is constant; but will point to some garbage location
+           p=&a; //not valid. memory of p cannot be modified
+           *p = 20; //valid
+           int * const cp = &a; //valid ; now cp cannot be modified
+           *cp = 45; //valid. value can be modified
+        3. constant pointer to constant integer
+           const int * const ptr; // pointer value and location both are constant.
+
+           eg. int a;
+               int b;
+               const int * const p = &a; //valid
+                &p=b; //invalid becuase the data ptr is pointing to is const
+                *p=20; //invalid becuase the ptr is const
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`           
+   volatile 
+   ==> [with primitve datatypes]
+   - it tells the compiler that the value of the variable can change unexpectedly without knowledge of compiler/current execution flow
+   - It changes the assembly instructions the compiler generates
+   int volatile a; or volatile int a;
+   a = 10; ==> it tells the compiler that value of the variable can change anytime so whenever you're reading this variable a, 
+                always go and fetch it from memory location
+
+   case 1: when not using volatile--
+   int a =20;
+   a=a+5; {Load r [a] ; Add r #5}
+   a=a+9; {Add r #9 ; store r [a]}
+   printf("%d",a);
+
+   case 2: when using volatile--
+   int volatile b = 20;
+   b=b+5; {Load r [b] ; Add r #5 ; store r [b]}
+   b=b+9; {Load r [b] ; Add r #9 ; store r [b]}
+   printf("%d",b)
+
+  Use case: if someone tries to modify the variable externally 
+  for eg. 
+  in case 1 after adding 5 if from outside a = 10
+  still final print output will be 34
+
+  in case 2 after adding 5 if from outside b = 10
+  final print output will be 19
+
+  volatile
+  ==> [with pointers ]
+  1. A pointer to a volatile datatype
+     
+     volatile int * ptr; // This pointer points to a variable that is volatile. pointer itself is not volatile.
+  
+  2. A volatile pointer to a non-volatile data
+     int * volatile ptr; // pointer itself is volatile but data/memory location it is pointing to is non-volatile.
+  
+  3. A volatile pointer to a volatile data/datatype
+     volatile int * volatile ptr; pointer is volatile; memory location is also volatile
+
+  Applications: 
+     Memory Mapped peripheral register.
+     Global variable modified by an ISR (Interrupt Service Routine).
+     Global Variable within a multithreaded application.
+
+     if address 0xDEADFEED is a memory mapped address to a peripheral.
+     int * p  = 0xDEADFEED; and suppose data stored at this adderess is 0
+     while (*p != 1)
+     {
+        //statements;
+     }
+     now its assembly will look like this
+     load r @p
+     while(r!=1)
+     {
+        //statements;
+     }
+     This will be an infinite loop as even if the peripheral data changes to 1, r is still 0.
+
+     instead if we use 
+     volatile int * p;
+     while (*p != 1)
+     {
+        //statements;
+     }
+     its assembly will look like:
+     load r @p
+     while ([load r @p] != 1)
+     {
+        statements;
+     }
+     so it will exit the while loop when data is modified to 1
+==================================================================================     
+
