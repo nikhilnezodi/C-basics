@@ -27,3 +27,19 @@ pointer can be helpful in accessing, reading/writing a given memory location.
 suppose i want to point to 0x600
 p = 0x600;
 p+5 //now it will point to 0x605
+
+
+//Structures
+Struct is a user defined datatype
+syntax of struct==>
+
+struct student{
+        int student_id;
+        int class;
+        int age;
+        char * name;
+};
+
+struct student s;
+
+To access student_id of this struct==> s.student_id
