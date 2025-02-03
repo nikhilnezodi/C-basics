@@ -43,3 +43,42 @@ struct student{
 struct student s;
 
 To access student_id of this struct==> s.student_id
+
+
+Bitwise Operators - Used to read/modify certain bit of a byte [Bitwise Manipulation]
+1. AND Operator (&) - 
+2. OR Operator (|) - 
+3. XOR Operator (^) -
+4. NOT Operator (~) -
+5. Left Shift (<<) -
+6. Right Shift (>>) -
+
+eg. A = 10110101
+    B = 01101101
+  A&B = 00100101
+  A|B = 11111101 
+  A^B = 11011000
+   ~A = 01001010
+ A<<1 = 01101010
+ A>>1 = 01011010
+
+ Functions - 
+
+ return_type function_name(argument); //Function Declaration
+ for eg. 
+ int add(int a, int b);
+
+ return_type function_name(argument)    //Function Definition
+ {
+        // operations
+        return data
+ }
+
+int add(int a, intb)
+{
+        int sum = a+b;
+        return sum;
+}
+
+
+eg. f = add(5,3); //Function call
