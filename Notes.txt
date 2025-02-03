@@ -218,4 +218,13 @@ eg. int var; //size = 4 bytes
      }
      so it will exit the while loop when data is modified to 1
 ==================================================================================     
+Global and Static variables
 
+   -global variables are defined outside of the functions after header imports.
+    can be used throughout the file and can be modified.
+
+   -static variable is declared and initialized only once and can be used across multiple function calls.
+    its value is preserved across multiple calls.
+
+   -by default a function is extern. That means the function can be used outside the file in other files also
+    if a function is prefixed by static. It cannot be used outside the scope of the file.
