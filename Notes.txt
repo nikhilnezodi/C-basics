@@ -228,3 +228,81 @@ Global and Static variables
 
    -by default a function is extern. That means the function can be used outside the file in other files also
     if a function is prefixed by static. It cannot be used outside the scope of the file.
+
+=====================================================================================
+Memory Layout of a C program
+   - Suppose you have a file main.c . Within this you have multiple 
+     functions (one of them being main()), header files, global/local/static variables, 
+     dynamically allocated memory, code of the program.
+     When you compile this file using gcc compiler tool chain, you get a binary file named "a.out"
+     This binary file is not readable as it is in binary.
+
+     When this file is executed, what an OS does is it will load the entire binary into the RAM.
+     While loading this binary into RAM, it will segregate the entire program into 5 segments
+     and it will load all those segments onto your RAM. Namely-
+     1. Text
+     2. initialized data segment
+     3. BSS (uninitialized data segment)
+     4. Heap
+     5. Stack
+
+      _______      
+     | stack |  <---Highest memory
+     |  |    |
+     |  V    |
+      -------
+     |   ^   |
+     |   |   |
+     | heap  |
+      -------
+     | init  | <--global/static variables with inital value assigned by user
+      -------
+     | BSS   | <--global/static variables with no inital value assigned by user
+      -------
+     | code  | <--Read Only
+     |       | <--Lowest Memory
+      -------
+
+
+
+
+     1. Text Segment -
+        starts at the lowest memory location of all the segments. This is where our code is stored.
+        we can also call it code segment. It is read-only. Cannot be derefenced and modified.
+
+     2. Data Segment - 
+        Gets memory just above code segment. It is of two types.
+        (a) Uninitialized data segment (BSS)
+        (b) initialized data segment - readonly & read-write
+
+        variable declared as global or static gets memory allocated from this data segment.
+
+        A global/static variable is explicity initialized with an initial value - 
+        it gets memory allocation from initialized data segment
+
+        A global/static value with no initial value gets memory allocated from BSS segment.
+        It has default initial value 0.
+      
+     3. Heap segment
+        All dynamic memory allocation that happens during execution of the program gets 
+        memory from heap segment. It starts at data segment +1 and grows upward (from lower memory 
+        locations to upper memory locations) as program executes if more memory required.
+        For memory allocation, library functions are used to perform dynamic memory allocations.
+        for. eg. ptr = malloc(20); -> to request bytes memory to the heap area and we get the pointer 
+        of starting address of that memory allocation.
+        we can also use alloc()
+
+     4. Stack segment
+        Stack starts at the highest memory location and grows downwards.
+        Variable declared as local variable gets the memory from stack. 
+        -Any variable which is part of the function and not static/global, 
+        that variable gets the memory from stack. 
+        -All the function arguments get the memory from stack.
+        -Return address in the caller function. 
+         |->eg. A() and B() exists and B() is called inside A(), 
+           it has to return back to the line where it was called inside A() after its execution.
+           so the address of B() instruction is stored in stack segment.
+
+      
+         
+
