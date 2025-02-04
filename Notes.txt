@@ -302,7 +302,134 @@ Memory Layout of a C program
          |->eg. A() and B() exists and B() is called inside A(), 
            it has to return back to the line where it was called inside A() after its execution.
            so the address of B() instruction is stored in stack segment.
+==============================================================================================
 
+void keyword
+
+ void keyword is a special datatype.
+ It tells the compiler that there is no data involved OR
+ if data is involved, that data is of no type.
+
+ 1. Void represented as No Data -
+
+ Here void tells the compiler that the function will not return any thing.
+ void printA(int A)
+ {
+   //statements;
+   return;
+ }
+
+ void tells compiler that this function does not accept any arguments, so if any arguments are
+ passed to the function, it will be compilation error.
+ void printA(void)
+ {
+   //statements;
+   return;
+ }
       
-         
+ 2. Void Represented as No Type
+
+ A pointer declared as void has no type, it can point to any data.
+ void * ptr; // A void pointer
+
+
+ eg. void * ptr;
+    int a;
+    char c;
+    ptr = &a; //valid
+    ptr = &c; //also valid
+    dereferencing on a void pointer is not allowed.
+    it would not know how many bytes are stored at the location it points to.
+
+    So how do we access data pointed by void pointer??
+    By converting void pointer into integer or character pointer first [i.e. Typecasting]
+    int * p = (int *) ptr;
+
+    or 
+
+    char * cp;
+    cp = (char *) ptr;
+
+=========================================================================================
+
+Create an image using C 
+ 
+ Image is just a file which has set of properties and attributes that is used to specify that particular image.
+
+ For eg. File.png 
+ -> File header (This data is specifically created by properties of that file)
+ -> File Data (Actual Data we want to store in that file)
+
+ Given file can have following properties/metadata/attributes:
+ 1. Type
+ 2. Size
+ 3. Creation date
+ 4. Modification date
+ 5. Height
+ 6. Width
+      .
+      .
+      .
+ These properties are stored in the file header.
+ The specification of where goes what kind of attributes will be specified by File Format.
+
+ File Data will have the actual image data or the pixels of the image.
+ 3x4 (heightxwidth) image.
+ 3x4=12 pixels.
+ each pixels will store 3 values - intensity of red, intensity of green, intensity of blue.
+ depending on the intensity, a unique colour will be assigned to the pixel.
+
+ Size of the file data = h x w x 3 x 1 byte = 3hw bytes
+ Actual size is determined by the file Format
+
+ BMP (Bitmap) Image Format
+
+  File.bmp contains 3 sections - Header, info header, data section
+  Header is of 14Bytes -  1st 2 bytes for type of the file
+                        following 4 bytes for size of the file (size of (header + info header + data))
+                        4 Bytes reserved
+                        4 Bytes Offset of the data [first byte of the data]
+
+  InfoHeader is of 40 Bytes - first 4 Bytes -> sizeof(info heafer)
+             4 Bytes -> width & height
+             rest -> info around that image is stored.
+
+  Data section is 3xwxh Bytes
+
+  If a file is created and write these information in the above mentioned 
+  format, it becomes a bmp file.
+
+  void * ptr;
+  ptr = malloc (header_size + infoheader_size + 3xhxw)
+  if i want to point to first two bytes and modify the file type. i will have to 
+  typecast the pointer as unsigned short (because it is 2bytes)
+
+  unsigned short * usptr = (unsigned short *) ptr
+  *usptr = "BM"  //now you have modified the type of thsi bmp file as BM
+  
+  now if i want to write the size of infoheader.
+  To modify a specifc field
+  1. offset of the field.
+  2. advance pointer to that offset - > ptr = ptr + offset;
+  3. type of data stored  at the offseted field
+  4. typecasting into appropriate pointer -> int * iptr = (int *) ptr;
+  5. deference and assign value -> *iptr = 40; //size of infoheader is 40
+
+  So many operations to modify just one specifc field.
+  if there are hundreds of field, this implementation becomes complex and prone to errors.
+  And only for this purpose C has provided us with structures.
+  So struct is a way to organise such kind of a data. Structure can make this implementation very simple.
+
+  struct Header{
+   unsigned short type_of_file;
+   int size;
+   int reserved;
+   int offset;
+  }
+  struct Header hdr;
+  hdr.size = 2;
+
+  
+
+
 
