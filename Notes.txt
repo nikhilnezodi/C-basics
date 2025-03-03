@@ -429,7 +429,120 @@ Create an image using C
   struct Header hdr;
   hdr.size = 2;
 
-  
+=========================================================================================
+Preprocessor 
 
+Preprocessor is a program that executes before compilation starts.
+source file is Preprocessed into an intermediate file. 
+file.c ----> file.i
+
+
+Preprocessor program will process all the directives present in the source file
+
+preprocessor directives start with #, then some token and then some value
+
+   1. File inclusion directive - directs preproccesor to bring a file to the current source file
+      a. #include<stdio.h>  -> <> fetching from standard list of system directories
+      b. #include "some_file.h" -> "" fetching from current source directory
+   2. Macro
+      #define token value
+      eg. #define PI 3.14 
+      so wherever PI is used in the source code, it will be replaced by 3.14
+
+      Macro with parameters
+      #define PI 3.14
+      #define AREA(r) PI*r*r
+
+      int main()
+      {
+         int r= 10;
+         double area = AREA(r);
+      }
+
+      So after preprocessing it will look like:
+      double area = 3.14*r*r;
+
+
+      as it is not a variable, so it does not utilize memory. Can be used to save memory
+
+      another way to use parameterized Macro
+      instead of doing:
+      int i =0;
+      for (i=0;i<10;i++)
+      {
+         ...
+      }
+
+      we can do:
+      #define FOR(n) for(i=0;i<10;i++)
+      int i=0;
+   3. Conditional Compilation directives
+
+      a. #ifdef XYZ
+         ..
+         #endif
+         
+      b. #ifndef XYZ
+         ..
+         endif
+      
+      c. #if EXP1
+         .
+         #elif EXP2
+         .
+         #else
+         .
+         #endif
+   to only do the preprocessing part we do the following command:
+   gcc filename.c -E
+====================================================================================
+register keyword
+
+   When we create a local variable (for eg.  int a;) --> it will stored in stack (which will be part of the RAM memory)
+   If the variable will be accessed very frequenty in your code. Then you can tell the compiler to store
+   the variable in register. Because, accessing a register is much faster than accessing a memory location.
+
+   Registers are limited (depending on architecture)
+
+   when we put register keyword in front of our variable, compiler puts some limitations on what we 
+   can do with that variable.
+   eg. 
+      register int a;
+      Limitations:
+      1. we cannot access the address of the register a. (address is invalid)
+      2. cannot use static keyword with register.
+      3. cannot use register on global variables.
+=========================================================================================
+typedef 
+
+   Helps you give a new name to an existing datatype (to create an alias)
+   
+   typedef existing_data_type new_name_to_existing_data_type;
+   eg.
+      typedef int integer;
+
+      now you can either do int a; OR integer a;
+      because now integer is an alias of datatype int.
+
+
+      struct student{
+         ...;
+      };
+
+      stuct student s1;
+      struct student s2;
+
+
+      now if you use typedef
+
+      typedef struct student{
+         ..;
+      } stud;
+      stud s1;
+      stud s2;
+
+      ---------------------------------------------------------------------------
+      long long int b;  ==>  long long int lli;
+                             lli b;
 
 
