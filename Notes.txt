@@ -546,3 +546,21 @@ typedef
                              lli b;
 
 
+C vs Embedded C 
+ Embedded C is basically C programming langauge to write low level software for embedded systems.
+
+ Embedded environment is resource constrained environment.
+
+ - Limited memory (RAM/ROM)
+ - Limited Power and need to maintain good Performance
+ 
+ Low level sw could be - drivers and firmwares
+ Basic duties - 
+ 1. Register manipulation to configure the device that these drivers/firmwares are controlling.
+
+
+ Timer:
+ 1. Set the timer value.
+ 2. start the timer.
+ 3. Generate an interrupt with timer is complete. - in the form of ring or vibration.
+ 
